@@ -1,6 +1,8 @@
 package com.mirtestpage;
 
 
+import java.util.Set;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -109,20 +111,23 @@ public class MirTest {
 	    AddtoCart.searchprod(driver).sendKeys("3007294");
 	    AddtoCart.searchbtn(driver).click();
 	     
-	    String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL, Keys.RETURN);
-	    WebElement e = driver.findElement(By.xpath(".//*[@id=\'design-row-block\']/ul/div/div/div/li/div/a/img"));
-	e.sendKeys(selectLinkOpeninNewTab);//to open the link in a current page in to the browsers new tab
-
-	    e.sendKeys(Keys.CONTROL + "\t");//to move focus to next tab in same browser
-	    try {
-	        Thread.sleep(8000);
-	    } catch (InterruptedException e1) {
-	        // TODO Auto-generated catch block
-	        e1.printStackTrace();
-	    }
 	    
-	    e.sendKeys(Keys.CONTROL + "\t");//to switch the focus to old tab again
-	   	   
+	    WebElement e = driver.findElement(By.xpath(".//*[@id=\'design-row-block\']/ul/div/div/div/li/div/a/img"));
+	    act.contextClick(e).sendKeys(Keys.ARROW_DOWN).sendKeys(Keys.ENTER).build().perform();
+	   
+	    String mainwindow = driver.getWindowHandle();
+	    Thread.sleep(3000);
+	    Set<String> handles= driver.getWindowHandles();
+	    for(String handle:handles)
+	    {
+	    	if(!handle.equals(mainwindow))
+	    	{
+	    	   driver.switchTo().window(handle);
+	    	   
+	    	}
+	    	Thread.sleep(3000);
+	    	driver.switchTo().window(mainwindow);
+	    }
 	    // 9.Select Custome stiching option.
 	    
 	    ((JavascriptExecutor)driver).executeScript("scroll(0,900)");
